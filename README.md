@@ -38,6 +38,10 @@ Optional Arguments:
   This would: spoof as `192.168.0.1` and poison the ARP cache of all devices on the network
 
 # TODO
-Stealth mode - Implement an option that doesn't use gratuitous ARP and instead only responds to ARP requests for the spoofed IP
-Option to set timeout for ARP resolution
-Option to stop actively spoofing (sending gratuitous packets) after a certain amount of time
+- Stealth mode - Implement an option that doesn't use gratuitous ARP and instead only responds to ARP requests for the spoofed IP
+
+
+- Option to set timeout for ARP resolution
+
+
+- Option to stop actively spoofing (sending gratuitous packets) after a certain amount of time
