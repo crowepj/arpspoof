@@ -143,7 +143,7 @@ uint8_t util_parse_opts(int argc, char *argv[], struct InterfaceInfo *interface,
 
       // The interface to spoof on - if left blank, a default one is chosen
     case 'i':
-      interface->name = optarg;
+      strncpy(interface->name, optarg, IFNAMSIZ);
       break;
 
       // help flag

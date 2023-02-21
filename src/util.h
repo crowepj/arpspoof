@@ -1,8 +1,9 @@
 #pragma once
 #include <stdint.h>
+#include <net/if.h>
 
 struct InterfaceInfo {
-  char *name;
+  char name[IFNAMSIZ];
   int index;
   uint8_t mac[6];
   uint32_t ip;
@@ -15,8 +16,8 @@ struct IPInfo {
 };
 
 struct cmdflags {
-  int restore;
-  int respond;
+  volatile int restore;
+  volatile int respond;
 };
 
 // Get IPv4 address of an interface
