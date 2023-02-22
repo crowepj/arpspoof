@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
     exit(EXIT_SUCCESS);
 
   // Get a default interface if none was passed in cmd line arguments
-  if (*interface.name = '\0'); {
+  if (*interface.name == '\0') {
     struct ifaddrs *ifaddr;
     int found = 0;
     
