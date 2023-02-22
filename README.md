@@ -61,7 +61,7 @@ If you want to use `arpspoof` without `sudo`, you need to give it the CAP_NET_RA
 - Stealth mode - Implement an option that doesn't use gratuitous ARP and instead only responds to ARP requests for the spoofed IP
 
 
-- Option to set timeout for ARP resolution
+- Option to set custom timeout for ARP resolution
 
 
 - Option to stop actively spoofing (sending gratuitous packets) after a certain amount of time
